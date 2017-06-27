@@ -104,9 +104,12 @@ def get_cpu_extopts(lib):
         # define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
     )
     if sys.platform != 'win32':
+        extra_compile_args = [
+                '-std=c++11', '-Wno-sign-compare', '-Wno-unused-function', '-Wno-cpp']
+        if sys.platform == 'darwin':
+            extra_compile_args.append('-stdlib=libc++')
         ext_opts.update(dict(
-            extra_compile_args=[
-                '-std=c++11', '-Wno-sign-compare', '-Wno-unused-function', '-Wno-cpp'],
+            extra_compile_args=extra_compile_args,
             runtime_library_dirs=['$ORIGIN/'],
         ))
     else:
